@@ -11,7 +11,8 @@
       "You can go everywhere",
       "Good sound system"
     ],
-    "rating": 3
+    "rating": 3,
+    "carImage": "Range_Rover"
   },
   {
     "consList": [
@@ -27,7 +28,8 @@
       "",
       ""
     ],
-    "rating": 4
+    "rating": 4,
+    "carImage": "Alpine_roadster"
   },
   {
     "consList": [
@@ -44,7 +46,8 @@
       "Can bring the family home safely",
       "The city must have"
     ],
-    "rating": 5
+    "rating": 5,
+    "carImage": "BMW_330i"
   },
   {
     "consList": [
@@ -56,6 +59,7 @@
     "marketPrice": 85900,
     "model": "GLE coupe",
     "prosList": [],
-    "rating": 2
+    "rating": 2,
+    "carImage": "Mercedez_benz_GLC"
   }
 ]
