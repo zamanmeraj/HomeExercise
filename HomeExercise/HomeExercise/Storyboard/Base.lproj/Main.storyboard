@@ -23,13 +23,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tacoma 2021" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yur-3p-Jci">
-                                <rect key="frame" x="20" y="253.5" width="236" height="44"/>
+                                <rect key="frame" x="20" y="253.5" width="394" height="44"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="38"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get your's now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEs-dP-eSb">
-                                <rect key="frame" x="20" y="297.5" width="158.5" height="25.5"/>
+                                <rect key="frame" x="20" y="297.5" width="394" height="25.5"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="22"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -49,10 +49,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vEs-dP-eSb" secondAttribute="trailing" symbolic="YES" id="93a-rS-4hB"/>
                             <constraint firstItem="xBP-G1-SNl" firstAttribute="top" secondItem="TBq-Al-Tez" secondAttribute="bottom" id="9AG-Js-Cak"/>
                             <constraint firstItem="vEs-dP-eSb" firstAttribute="leading" secondItem="TBq-Al-Tez" secondAttribute="leading" constant="20" id="A3l-d6-IWD"/>
                             <constraint firstItem="xBP-G1-SNl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Goz-wG-Cvc"/>
                             <constraint firstAttribute="trailing" secondItem="Kdy-GK-xCB" secondAttribute="trailing" id="HGI-jN-SrA"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yur-3p-Jci" secondAttribute="trailing" symbolic="YES" id="INx-w2-QQi"/>
                             <constraint firstItem="TBq-Al-Tez" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Kx4-Ph-1NI"/>
                             <constraint firstItem="vEs-dP-eSb" firstAttribute="leading" secondItem="yur-3p-Jci" secondAttribute="leading" id="McS-g2-xEC"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="TBq-Al-Tez" secondAttribute="trailing" id="P2u-nr-kcI"/>
@@ -67,6 +69,7 @@
                     </view>
                     <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" id="r8C-4I-e3Y"/>
                     <connections>
+                        <outlet property="carListTableView" destination="Kdy-GK-xCB" id="iqN-Mo-YEi"/>
                         <outlet property="filterView" destination="xBP-G1-SNl" id="Dea-gt-QRF"/>
                     </connections>
                 </viewController>
