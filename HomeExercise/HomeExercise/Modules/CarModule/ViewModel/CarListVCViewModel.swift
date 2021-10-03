@@ -15,11 +15,15 @@ protocol CarListModalViewDelegate {
 
 class CarListVCViewModel {
     
+    
+    private var selectedRow = IndexPath(row: 0, section: 0)
+    private let shared = Utility.shared
+    
     var isExpandStatus = [Bool]()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     var carListModalViewDelegate: CarListModalViewDelegate? {
         didSet {
-            Utility.shared.carDetails.enumerated().forEach({ self.isExpandStatus.append($0.0 == 0) })
+            shared.carDetails.enumerated().forEach({ self.isExpandStatus.append($0.0 == 0) })
             self.carListModalViewDelegate?.updateCarListModal()
         }
     }
@@ -30,21 +34,27 @@ class CarListVCViewModel {
     
     /// Fetch JSON Data from json file and convert it to model.
     private func fetchJSONData(){
-        let shared = Utility.shared
+        
         let json = Constants.JSON.jsonFile
         let carLists: [CarDetails] = shared.fetchAndParseJSONFile(resource: json)
+        
         if !UserDefaults.standard.bool(forKey: Constants.Entity.isSynced) {
-            
             carLists.forEach({ Utility.shared.saveDataInCoreData(detail: $0) })
         } else {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.Entity.carMaker)
-            do {
-               _ = try context.fetch(request) as? [CarMaker]
-                
-            }catch let error {
-                print(error.localizedDescription)
-            }
+            let carMaker = CoreDataManager.shared.fetchCarMakerData()
+            print(carMaker)
         }
+        
         Utility.shared.carDetails = carLists
+    }
+    
+    
+    func setExpandCollapseStatus(indexPath: IndexPath){
+        
+        if self.selectedRow == indexPath { return }
+        
+        self.selectedRow = indexPath
+        self.isExpandStatus.enumerated().forEach({ self.isExpandStatus[$0.0] = false })
+        self.isExpandStatus[indexPath.row] = true
     }
 }

@@ -19,7 +19,6 @@ class CarListVC: BaseController {
     
     private var carListVCViewModel:CarListVCViewModel?
     fileprivate let cellId = Constants.Cell.completeCarCell
-    private var selectedRow: IndexPath = IndexPath(row: 0, section: 0)
     
     override func viewDidLoad() {
         
@@ -44,6 +43,7 @@ class CarListVC: BaseController {
     }
 }
 
+//MARK:- TableView DataSource and Delegate -
 extension CarListVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,17 +62,15 @@ extension CarListVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if selectedRow == indexPath { return }
-        carListVCViewModel?.isExpandStatus.enumerated().forEach({ carListVCViewModel?.isExpandStatus[$0.0] = false })
-        carListVCViewModel?.isExpandStatus[indexPath.row] = true
+        self.carListVCViewModel?.setExpandCollapseStatus(indexPath: indexPath)
         UIView.animate(withDuration: 0.3) {
-            self.selectedRow = indexPath
             self.carListTableView.scrollToRow(at: indexPath, at: .top, animated: true)
             self.carListTableView.reloadData()
         }
     }
 }
 
+//MARK:- CarListModalView Delegate -
 extension CarListVC: CarListModalViewDelegate {
     
     func updateCarListModal() {
@@ -80,6 +78,7 @@ extension CarListVC: CarListModalViewDelegate {
     }
 }
 
+//MARK:- Get frame with refrence to main view -
 extension CarListVC: GetMainViewFrameDelegate {
     
     func changeMakeViewFrameWithReferenceToView() -> CGRect {
@@ -91,6 +90,7 @@ extension CarListVC: GetMainViewFrameDelegate {
     }
 }
 
+//MARK:- Filter view delegates -
 extension CarListVC: AddFilterViewDelegate {
     
     func reloadFilterData(maker: String?, model: String?) {

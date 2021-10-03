@@ -36,19 +36,16 @@ class FilterView: UIView {
             self.carMakeTF.attributedPlaceholder = Constants.Placeholder.anyMake.attributedPlaceholder
         }
     }
-    
     @IBOutlet weak var carModelTF: UITextField! {
         didSet {
             self.carModelTF.attributedPlaceholder = Constants.Placeholder.anyModel.attributedPlaceholder
         }
     }
-    
     @IBOutlet weak var containerView: UIView! {
         didSet {
             self.containerView.make(radius: 8.0, backgroundColor: UIColor.appDarkGray)
         }
     }
-    
     @IBOutlet weak var anyMakeView: UIView! {
         didSet {
             self.anyMakeView.setShadow(opacity: 0.5, color: .black, offset: offset, radius: 3)
@@ -56,7 +53,6 @@ class FilterView: UIView {
 
         }
     }
-    
     @IBOutlet weak var anyModelView: UIView! {
         didSet {
             self.anyModelView.setShadow(opacity: 0.5, color: .black, offset: offset, radius: 3)
@@ -113,6 +109,7 @@ class FilterView: UIView {
                        }, completion: nil)
     }
     
+    //MARK:- Remove filter view from superview -
     @objc func removeTransparentView() {
         self.transparentView.removeFromSuperview()
         self.tableView.removeFromSuperview()
@@ -131,7 +128,8 @@ class FilterView: UIView {
         }
         self.addFilterViewDelegate?.reloadFilterData(maker: self.carMakeTF.text, model: self.carModelTF.text)
     }
-     
+    
+     //MARK:- IBActions -
     @IBAction func anyMakeBtnTapped(_ sender: UIButton) {
         
         self.selectedDropdown = .carMaker
@@ -151,7 +149,7 @@ class FilterView: UIView {
     }
 }
 
-
+//MARK:- Filter TableView DataSource and Delegate -
 extension FilterView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
