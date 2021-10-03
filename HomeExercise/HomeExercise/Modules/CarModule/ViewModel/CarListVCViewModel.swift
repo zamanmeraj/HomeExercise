@@ -14,27 +14,23 @@ protocol CarListModalViewDelegate {
 
 class CarListVCViewModel {
     
-    var carListModal: [CarDetails]
     var isExpandStatus = [Bool]()
-    
     var carListModalViewDelegate: CarListModalViewDelegate? {
         didSet {
-            self.carListModal.enumerated().forEach({ self.isExpandStatus.append($0.0 == 0) })
+            Utility.shared.carDetails.enumerated().forEach({ self.isExpandStatus.append($0.0 == 0) })
             self.carListModalViewDelegate?.updateCarListModal()
         }
     }
     
     init() {
-        self.carListModal = []
         self.fetchJSONData()
     }
     
     /// Fetch JSON Data from json file and convert it to model.
     private func fetchJSONData(){
-        
         let shared = Utility.shared
         let json = Constants.JSON.jsonFile
         let carLists: [CarDetails] = shared.fetchAndParseJSONFile(resource: json)
-        self.carListModal = carLists
+        Utility.shared.carDetails = carLists
     }
 }

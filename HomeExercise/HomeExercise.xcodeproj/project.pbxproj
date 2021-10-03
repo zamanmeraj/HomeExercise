@@ -19,6 +19,7 @@
 		497B3DBC2709A69100B43E0A /* CGFloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B3DBB2709A69100B43E0A /* CGFloatExtension.swift */; };
 		497B3DC02709B27C00B43E0A /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B3DBF2709B27C00B43E0A /* FilterCell.swift */; };
 		497B3DC22709C7FE00B43E0A /* OptionalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B3DC12709C7FE00B43E0A /* OptionalExtension.swift */; };
+		497B3DC42709E31300B43E0A /* DropdownEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B3DC32709E31300B43E0A /* DropdownEnum.swift */; };
 		49B097092704D8770044393B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B097082704D8770044393B /* AppDelegate.swift */; };
 		49B0970B2704D8770044393B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B0970A2704D8770044393B /* SceneDelegate.swift */; };
 		49B0970D2704D8770044393B /* CarListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B0970C2704D8770044393B /* CarListVC.swift */; };
@@ -52,6 +53,7 @@
 		497B3DBB2709A69100B43E0A /* CGFloatExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatExtension.swift; sourceTree = "<group>"; };
 		497B3DBF2709B27C00B43E0A /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		497B3DC12709C7FE00B43E0A /* OptionalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtension.swift; sourceTree = "<group>"; };
+		497B3DC32709E31300B43E0A /* DropdownEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownEnum.swift; sourceTree = "<group>"; };
 		49B097052704D8770044393B /* HomeExercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeExercise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B097082704D8770044393B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49B0970A2704D8770044393B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				490F5A01270794B4000AA2BC /* RatingEnum.swift */,
+				497B3DC32709E31300B43E0A /* DropdownEnum.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				49B0970B2704D8770044393B /* SceneDelegate.swift in Sources */,
 				490F59FB27071618000AA2BC /* ProsConsList.swift in Sources */,
 				490F5A0827086EE9000AA2BC /* StringExtension.swift in Sources */,
+				497B3DC42709E31300B43E0A /* DropdownEnum.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,6 +42,9 @@
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qba-dB-EzH">
                                     <rect key="frame" x="0.0" y="0.0" width="346" height="36"/>
+                                    <connections>
+                                        <action selector="anyMakeBtnTapped:" destination="-1" eventType="touchUpInside" id="IC2-O8-cdQ"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -66,6 +69,9 @@
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7eI-EL-AbH">
                                     <rect key="frame" x="0.0" y="0.0" width="346" height="36"/>
+                                    <connections>
+                                        <action selector="anyModelBtnTapped:" destination="-1" eventType="touchUpInside" id="Ys2-Tj-pSm"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>

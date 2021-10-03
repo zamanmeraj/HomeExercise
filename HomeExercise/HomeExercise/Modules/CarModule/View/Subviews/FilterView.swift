@@ -7,10 +7,26 @@
 
 import UIKit
 
+protocol GetMainViewFrameDelegate {
+    
+    func changeMakeViewFrameWithReferenceToView() -> CGRect
+    func changeModelViewFrameWithReferenceToView() -> CGRect
+}
+
+protocol AddFilterViewDelegate {
+    func addTableViewAsSubview()
+}
+
 class FilterView: UIView {
 
     let offset = CGSize(width: -1, height: 1)
     let tableView = UITableView()
+    let transparentView = UIView()
+    
+    var filterCarList = [String]()
+    var getMainViewFrameDelegate: GetMainViewFrameDelegate?
+    var addFilterViewDelegate: AddFilterViewDelegate?
+    var selectedDropdown = Dropdown(rawValue: 0)
     
     @IBOutlet var filterView: UIView!
     
@@ -60,19 +76,76 @@ class FilterView: UIView {
         self.setUpTableView()
     }
     
+    private func commonInit() {
+        
+        Bundle.main.loadNibNamed(Constants.NibFile.filterView, owner: self, options: nil)
+        addSubview(filterView)
+        filterView.frame = self.bounds
+        filterView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    }
+    
     private func setUpTableView() {
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FilterCell.self, forCellReuseIdentifier: Constants.Cell.filterCell)
     }
-     
-    func commonInit() {
+    
+    private func createfilterView(frames: CGRect) {
         
-        Bundle.main.loadNibNamed(Constants.NibFile.filterView, owner: self, options: nil)
-        addSubview(filterView)
-        filterView.frame = self.bounds
-        filterView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
+        self.transparentView.backgroundColor = UIColor.clear
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(removeTransparentView))
+        transparentView.addGestureRecognizer(tapgesture)
+        self.addFilterViewDelegate?.addTableViewAsSubview()
+        tableView.layer.cornerRadius = 5
+        UIView.animate(withDuration: 0.4,
+                       delay: 0.0,
+                       usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: .curveEaseInOut,
+                       animations: {
+                        self.tableView.frame = CGRect(x: frames.origin.x,
+                                                      y: frames.origin.y + frames.height + 5,
+                                                      width: frames.width,
+                                                      height: CGFloat(self.filterCarList.count * 50))
+                       }, completion: nil)
+    }
+    
+    @objc func removeTransparentView() {
+        self.transparentView.removeFromSuperview()
+        self.tableView.removeFromSuperview()
+    }
+    
+    private func setSelectedIndexValue(_ indexPath: IndexPath) {
+        
+        switch self.selectedDropdown {
+        case .carMaker:
+            self.carMakeTF.text = self.filterCarList[indexPath.row]
+            self.carModelTF.text = ""
+        case .carModel:
+            self.carModelTF.text = self.filterCarList[indexPath.row]
+        case .none:
+            break
+        }
+    }
+     
+    @IBAction func anyMakeBtnTapped(_ sender: UIButton) {
+        
+        self.selectedDropdown = .carMaker
+        filterCarList = Utility.shared.getAllMakers()
+        let frame = self.getMainViewFrameDelegate?.changeMakeViewFrameWithReferenceToView()
+        self.createfilterView(frames: frame!)
+        self.tableView.reloadData()
+    }
+    
+    @IBAction func anyModelBtnTapped(_ sender: UIButton) {
+        
+        self.selectedDropdown = .carModel
+        filterCarList = Utility.shared.getAllModels(maker: self.carMakeTF.text)
+        let frame = self.getMainViewFrameDelegate?.changeModelViewFrameWithReferenceToView()
+        self.createfilterView(frames: frame!)
+        self.tableView.reloadData()
     }
 }
 
@@ -81,12 +154,13 @@ extension FilterView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 0
+        return filterCarList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Cell.filterCell, for: indexPath)
+        cell.textLabel?.text = filterCarList[indexPath.row]
         return cell
     }
     
@@ -97,5 +171,7 @@ extension FilterView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        self.setSelectedIndexValue(indexPath)
+        self.removeTransparentView()
     }
 }

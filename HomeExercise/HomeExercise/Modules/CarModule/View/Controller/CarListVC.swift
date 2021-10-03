@@ -9,7 +9,12 @@ import UIKit
 
 class CarListVC: BaseController {
 
-    @IBOutlet weak var filterView: FilterView!
+    @IBOutlet weak var filterView: FilterView! {
+        didSet {
+            self.filterView.addFilterViewDelegate = self
+            self.filterView.getMainViewFrameDelegate = self
+        }
+    }
     @IBOutlet weak var carListTableView: UITableView!
     
     private var carListVCViewModel:CarListVCViewModel?
@@ -43,13 +48,13 @@ extension CarListVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.carListVCViewModel?.carListModal.count ?? 0
+        return Utility.shared.carDetails.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: indexPath) as! CompleteCarCell
-        cell.carDetail = self.carListVCViewModel?.carListModal[indexPath.row]
+        cell.carDetail = Utility.shared.carDetails[indexPath.row]
         cell.isExpanded = self.carListVCViewModel?.isExpandStatus[indexPath.row] ?? false
         cell.selectionStyle = .none
         return cell
@@ -72,5 +77,27 @@ extension CarListVC: CarListModalViewDelegate {
     
     func updateCarListModal() {
         self.carListTableView.reloadData()
+    }
+}
+
+extension CarListVC: GetMainViewFrameDelegate {
+    
+    func changeMakeViewFrameWithReferenceToView() -> CGRect {
+        return self.filterView.anyMakeView.convert(self.filterView.anyMakeView.bounds, to: self.view)
+    }
+    
+    func changeModelViewFrameWithReferenceToView() -> CGRect {
+        return self.filterView.anyModelView.convert(self.filterView.anyModelView.bounds, to: self.view)
+    }
+}
+
+extension CarListVC: AddFilterViewDelegate {
+    
+    func addTableViewAsSubview() {
+        
+        self.filterView.transparentView.frame = self.view.bounds
+        self.view.addSubview(self.filterView.transparentView)
+        self.view.addSubview(self.filterView.tableView)
+        
     }
 }
