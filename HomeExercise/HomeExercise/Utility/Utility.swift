@@ -7,18 +7,20 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class Utility {
     
     static let shared = Utility()
     var carDetails = [CarDetails]()
+    let context =  (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     /// Get all data from given JSON file
     /// - Returns: List of car details
     func fetchAndParseJSONFile<T: Decodable>(resource: String) -> [T] {
         
         let extensionName = Constants.Extensions.json
         guard let jsonUrl = Bundle.main.url(forResource: resource, withExtension: extensionName) else { return [] }
-        
         do {
             let data = try Data(contentsOf: jsonUrl)
             let result = try JSONDecoder().decode([T].self, from: data)
@@ -91,4 +93,48 @@ class Utility {
             self.carDetails = self.carDetails.filter({ return $0.model.localizedCaseInsensitiveContains(model) })
         }
     }
+    
+    /// Save Car Detail in Database
+    /// - Parameter detail: Model for car detail
+    func saveDataInCoreData(detail: CarDetails) {
+        
+        let carMaker = CarMaker(context: context)
+        carMaker.maker = detail.make
+        carMaker.marketPrice = Int32(detail.marketPrice)
+        carMaker.customerPrice = Int32(detail.customerPrice)
+        
+        var cons = NSSet()
+        var pros = NSSet()
+        
+        detail.consList.forEach { consList in
+            let consEntity = Cons(context: context)
+            consEntity.consTitle = consList
+            cons = cons.adding(consEntity) as NSSet
+        }
+        
+        detail.prosList.forEach { prosList in
+            let prosEntity = Pros(context: context)
+            prosEntity.prosTitle = prosList
+            pros = pros.adding(prosEntity) as NSSet
+        }
+        
+        carMaker.cons = cons
+        carMaker.pros = pros
+        carMaker.carImage = UIImage(named: detail.carImage)?.pngData()
+        carMaker.rating = Int16(detail.rating)
+        carMaker.model = detail.model
+        
+        do {
+            try context.save()
+            UserDefaults.standard.set(true, forKey: Constants.Entity.isSynced)
+        }catch let error {
+            print(error.localizedDescription)
+            UserDefaults.standard.set(false, forKey: Constants.Entity.isSynced)
+        }
+    }
+    
+    func changeModelToCarMaker(carLists: CarDetails) {
+        
+    }
+    
 }

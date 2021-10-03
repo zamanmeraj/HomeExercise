@@ -53,4 +53,9 @@ struct Constants {
         static let space = " "
     }
     
+    struct Entity {
+        static let carMaker = "CarMaker"
+        static let carModel = "CarModel"
+        static let isSynced = "isSynced"
+    }
 }
