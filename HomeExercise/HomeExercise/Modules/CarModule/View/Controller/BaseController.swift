@@ -11,12 +11,10 @@ class BaseController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNavBar()
     }
 
-    func setupNavBar() {
+    func setupNavBar(title: String) {
         self.navigationController?.setBarColor()
-        self.navigationController?.setLeftTitle(label: Constants.Title.title)
+        self.navigationController?.setLeftTitle(label: title)
     }
-
 }

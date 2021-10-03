@@ -6,18 +6,17 @@
 //
 
 import Foundation
+
 extension Int {
+    
     var roundedWithAbbreviations: String {
-//        let number = Double(self)
         let thousand = self / 1000
         let million = self / 1000000
         if million >= 1 {
-            return "\(million*10/10)M"
-        }
-        else if thousand >= 1 {
-            return "\(thousand*10/10)K"
-        }
-        else {
+            return "Price : \(million*10/10)m"
+        } else if thousand >= 1 {
+            return "Price : \(thousand*10/10)k"
+        } else {
             return "\(self)"
         }
     }
