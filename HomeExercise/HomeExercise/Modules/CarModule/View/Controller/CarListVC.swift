@@ -93,11 +93,21 @@ extension CarListVC: GetMainViewFrameDelegate {
 
 extension CarListVC: AddFilterViewDelegate {
     
+    func reloadFilterData(maker: String?, model: String?) {
+        
+        if let maker = maker, !maker.isEmpty, let model = model, !model.isEmpty {
+            Utility.shared.getFilteredArray(maker: maker, model: model)
+        }else {
+            Utility.shared.getFilteredArray(maker: self.filterView.carMakeTF.text)
+            Utility.shared.getFilteredArray(model: self.filterView.carModelTF.text)
+        }
+        self.carListTableView.reloadData()
+    }
+    
     func addTableViewAsSubview() {
         
         self.filterView.transparentView.frame = self.view.bounds
         self.view.addSubview(self.filterView.transparentView)
         self.view.addSubview(self.filterView.tableView)
-        
     }
 }

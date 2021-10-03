@@ -15,6 +15,7 @@ protocol GetMainViewFrameDelegate {
 
 protocol AddFilterViewDelegate {
     func addTableViewAsSubview()
+    func reloadFilterData(maker: String?, model: String?)
 }
 
 class FilterView: UIView {
@@ -128,6 +129,7 @@ class FilterView: UIView {
         case .none:
             break
         }
+        self.addFilterViewDelegate?.reloadFilterData(maker: self.carMakeTF.text, model: self.carModelTF.text)
     }
      
     @IBAction func anyMakeBtnTapped(_ sender: UIButton) {
