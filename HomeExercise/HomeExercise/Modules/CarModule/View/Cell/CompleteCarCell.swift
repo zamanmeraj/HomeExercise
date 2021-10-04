@@ -7,6 +7,14 @@
 
 import UIKit
 
+enum Rating: Int {
+    case k1Star = 1
+    case k2Star
+    case k3Star
+    case k4Star
+    case k5Star
+}
+
 class CompleteCarCell: UITableViewCell {
     
     @IBOutlet weak var carImage: UIImageView!
@@ -57,14 +65,14 @@ class CompleteCarCell: UITableViewCell {
         }
     }
     
-    var carDetail: CarDetails? {
+    var carDetail: CarMaker? {
         didSet {
-            self.carImage.image = UIImage(named: carDetail?.carImage ?? "")
+            self.carImage.image = UIImage(data: carDetail?.carImage ?? Data())
             let make = (self.carDetail?.make).unwrappedString
             let model = (self.carDetail?.model).unwrappedString
             self.carName.text = make + Constants.BlankSpace.space + model
-            self.carPriceLbl.text = self.carDetail?.customerPrice.roundedWithAbbreviations
-            guard let rating = Rating(rawValue: (self.carDetail?.rating).unwrappedInt) else { return }
+            self.carPriceLbl.text = Int(self.carDetail?.customerPrice ?? 0).roundedWithAbbreviations
+            guard let rating = Rating(rawValue: Int(exactly: self.carDetail?.rating ?? 0).unwrappedInt) else { return }
             self.setRating(rating: rating)
         }
     }
@@ -96,9 +104,12 @@ class CompleteCarCell: UITableViewCell {
     private func setupStackViewFrame() {
         
         var heightValue: CGFloat = 0.0
-        let prosList = self.carDetail?.prosList.filter({ return !$0.isEmpty })
-        let consList = self.carDetail?.consList.filter({ return !$0.isEmpty })
-        let totalCount = (prosList?.count ?? 0) + (consList?.count ?? 0)
+        let prosSet: [Pros] = self.carDetail?.pros?.filter({ return !($0 as! Pros).prosTitle.unwrappedString.isEmpty }) as! [Pros]
+        let prosList = prosSet.compactMap({ return $0.prosTitle })
+        let consSet = self.carDetail?.cons?.filter({ return !($0 as! Cons).consTitle.unwrappedString.isEmpty }) as! [Cons]
+        let consList = consSet.compactMap({ return $0.consTitle })
+        
+        let totalCount = prosList.count + consList.count
         if totalCount > 0 {
             calculateHeightForPros(prosList: prosList,heightValue: &heightValue)
             claculateHeightForCons(consList: consList, heightValue: &heightValue)

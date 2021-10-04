@@ -51,11 +51,18 @@ struct Constants {
     
     struct BlankSpace {
         static let space = " "
+        static let empty = ""
     }
     
     struct Entity {
         static let carMaker = "CarMaker"
         static let carModel = "CarModel"
+        static let pros = "Pros"
+        static let cons = "Cons"
         static let isSynced = "isSynced"
+    }
+    
+    struct Filter {
+        static let resetFilter = "Reset filter"
     }
 }

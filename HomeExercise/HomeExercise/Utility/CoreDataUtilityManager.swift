@@ -7,7 +7,9 @@
 
 import Foundation
 import CoreData
+import UIKit
 
+//CoreDataManager class to fetch data from Database
 class CoreDataManager {
     
     static let shared = CoreDataManager()

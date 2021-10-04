@@ -8,6 +8,7 @@
 import Foundation
 
 extension Optional {
+    
     var unwrappedString: String {
         if let val = self {
             return val as! String

@@ -90,17 +90,11 @@ extension CarListVC: GetMainViewFrameDelegate {
     }
 }
 
-//MARK:- Filter view delegates -
+//MARK:- Filter view delegates -C
 extension CarListVC: AddFilterViewDelegate {
     
-    func reloadFilterData(maker: String?, model: String?) {
+    func reloadFilterData() {
         
-        if let maker = maker, !maker.isEmpty, let model = model, !model.isEmpty {
-            Utility.shared.getFilteredArray(maker: maker, model: model)
-        }else {
-            Utility.shared.getFilteredArray(maker: self.filterView.carMakeTF.text)
-            Utility.shared.getFilteredArray(model: self.filterView.carModelTF.text)
-        }
         self.carListTableView.reloadData()
     }
     

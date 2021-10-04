@@ -10,6 +10,8 @@ import UIKit
 
 extension UIColor {
     
+    /// Get Color from hex color code.
+    /// - Parameter hexString: Hex color code
     convenience init(hexString: String) {
         let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int = UInt64()

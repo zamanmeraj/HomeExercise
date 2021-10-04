@@ -9,10 +9,11 @@ import Foundation
 import UIKit
 import CoreData
 
+//Utility class to acces Common functions
 class Utility {
     
     static let shared = Utility()
-    var carDetails = [CarDetails]()
+    var carDetails = [CarMaker]()
     let context =  (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     /// Get all data from given JSON file
@@ -48,7 +49,8 @@ class Utility {
     /// - Returns: All makers
     func getAllMakers() -> [String] {
         
-        self.carDetails = self.fetchAndParseJSONFile(resource: Constants.JSON.jsonFile)
+        let allCarDetails:[CarDetails] = self.fetchAndParseJSONFile(resource: Constants.JSON.jsonFile)
+        self.carDetails = self.changeModelToCarMaker(carLists: allCarDetails)
         return self.carDetails.compactMap({ $0.make })
     }
     
@@ -59,9 +61,9 @@ class Utility {
         
         if let maker = maker, !maker.isEmpty {
             // show model of given makers
-            let filterCarDetail = self.carDetails.filter({ return $0.make.localizedCaseInsensitiveContains(maker) })
+            let filterCarDetail = self.carDetails.filter({ return $0.make.unwrappedString.localizedCaseInsensitiveContains(maker) })
             return filterCarDetail.compactMap({ $0.model })
-        }else {
+        } else {
             //show all makers
             return self.carDetails.compactMap({ $0.model })
         }
@@ -73,7 +75,7 @@ class Utility {
     ///   - model: Model of the car
     func getFilteredArray(maker: String, model: String) {
         
-        self.carDetails = self.carDetails.filter({ return $0.make.localizedCaseInsensitiveContains(maker) && $0.model.localizedCaseInsensitiveContains(model)})
+        self.carDetails = self.carDetails.filter({ return $0.make.unwrappedString.localizedCaseInsensitiveContains(maker) || $0.model.unwrappedString.localizedCaseInsensitiveContains(model)})
     }
     
     /// Get filtered array for maker
@@ -81,7 +83,7 @@ class Utility {
     func getFilteredArray(maker: String?) {
         
         if let maker = maker, !maker.isEmpty {
-            self.carDetails = self.carDetails.filter({ return $0.make.localizedCaseInsensitiveContains(maker) })
+            self.carDetails = self.carDetails.filter({ return $0.make.unwrappedString.localizedCaseInsensitiveContains(maker) })
         }
     }
     
@@ -90,7 +92,7 @@ class Utility {
     func getFilteredArray(model: String?) {
         
         if let model = model, !model.isEmpty {
-            self.carDetails = self.carDetails.filter({ return $0.model.localizedCaseInsensitiveContains(model) })
+            self.carDetails = self.carDetails.filter({ return $0.model.unwrappedString.localizedCaseInsensitiveContains(model) })
         }
     }
     
@@ -99,7 +101,7 @@ class Utility {
     func saveDataInCoreData(detail: CarDetails) {
         
         let carMaker = CarMaker(context: context)
-        carMaker.maker = detail.make
+        carMaker.make = detail.make
         carMaker.marketPrice = Int32(detail.marketPrice)
         carMaker.customerPrice = Int32(detail.customerPrice)
         
@@ -127,14 +129,48 @@ class Utility {
         do {
             try context.save()
             UserDefaults.standard.set(true, forKey: Constants.Entity.isSynced)
-        }catch let error {
+        } catch let error {
             print(error.localizedDescription)
             UserDefaults.standard.set(false, forKey: Constants.Entity.isSynced)
         }
     }
     
-    func changeModelToCarMaker(carLists: CarDetails) {
-        
+    
+    /// Convert CarList Modal to CarMaker
+    /// - Parameter carLists: CarDetails Model
+    /// - Returns: Core Data CarMaker array
+    func changeModelToCarMaker(carLists: [CarDetails]) -> [CarMaker] {
+        var carMakers = [CarMaker]()
+        carLists.forEach { carDetail in
+            let entity = NSEntityDescription.entity(forEntityName: Constants.Entity.carMaker, in: context)
+            let carMaker = CarMaker(entity: entity!, insertInto: context)
+            carMaker.carImage = UIImage(named: carDetail.carImage)?.jpegData(compressionQuality: 0.9)
+            carMaker.make = carDetail.make
+            carMaker.model = carDetail.model
+            carMaker.customerPrice = Int32(carDetail.customerPrice)
+            carMaker.marketPrice = Int32(carDetail.marketPrice)
+            carMaker.rating = Int16(carDetail.rating)
+            
+            let pros = carDetail.prosList
+            let prosArr = pros.map { prosText -> Pros in
+                let entity = NSEntityDescription.entity(forEntityName: Constants.Entity.pros, in: context)
+                let prosValue = Pros(entity: entity!, insertInto: context)
+                prosValue.prosTitle = prosText
+                return prosValue
+            }
+            carMaker.pros  = NSSet(array: prosArr)
+            
+            let cons = carDetail.consList
+            let consArr = cons.map { consText -> Cons in
+                let entity = NSEntityDescription.entity(forEntityName: Constants.Entity.cons, in: context)
+                let consValue = Cons(entity: entity!, insertInto: context)
+                consValue.consTitle = consText
+                return consValue
+            }
+            carMaker.cons  = NSSet(array: consArr)
+            carMakers.append(carMaker)
+        }
+        return carMakers
     }
     
 }

@@ -123,7 +123,7 @@
                     <constraint firstItem="ibp-4r-g1X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="qjQ-pn-nOl"/>
                     <constraint firstItem="dAg-oD-gYP" firstAttribute="top" secondItem="WaA-iC-IW9" secondAttribute="top" id="tzV-3i-Ah6"/>
                     <constraint firstAttribute="trailing" secondItem="dAg-oD-gYP" secondAttribute="trailing" constant="10" id="v0L-UZ-NYK"/>
-                    <constraint firstItem="i3A-CM-B3j" firstAttribute="top" secondItem="dsm-rP-CP8" secondAttribute="bottom" priority="250" constant="20" id="xfM-Ew-yrg"/>
+                    <constraint firstItem="i3A-CM-B3j" firstAttribute="top" secondItem="dsm-rP-CP8" secondAttribute="bottom" priority="250" constant="8" id="xfM-Ew-yrg"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

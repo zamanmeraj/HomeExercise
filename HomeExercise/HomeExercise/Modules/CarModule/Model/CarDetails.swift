@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct CarDetails: Codable {
+struct CarDetails: Codable, Equatable {
     var consList:[String]
     var customerPrice: Int
     var make:String

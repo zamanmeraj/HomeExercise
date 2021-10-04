@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum Dropdown: Int {
+    case carMaker = 0
+    case carModel
+}
+
 protocol GetMainViewFrameDelegate {
     
     func changeMakeViewFrameWithReferenceToView() -> CGRect
@@ -15,12 +20,12 @@ protocol GetMainViewFrameDelegate {
 
 protocol AddFilterViewDelegate {
     func addTableViewAsSubview()
-    func reloadFilterData(maker: String?, model: String?)
+    func reloadFilterData()
 }
 
 class FilterView: UIView {
 
-    let offset = CGSize(width: -1, height: 1)
+    let offset = CGSize(width: 0, height: 0)
     let tableView = UITableView()
     let transparentView = UIView()
     
@@ -30,6 +35,25 @@ class FilterView: UIView {
     var selectedDropdown = Dropdown(rawValue: 0)
     
     @IBOutlet var filterView: UIView!
+    
+    @IBOutlet var anyMakeShadowView: UIView! {
+        didSet {
+            self.anyMakeShadowView.setShadow(opacity: 0.5,
+                                              color: .black,
+                                              offset: offset,
+                                              radius: 3)
+        }
+    }
+    
+    @IBOutlet var anyModelShadowView: UIView! {
+        didSet {
+            self.anyModelShadowView.setShadow(opacity: 0.6,
+                                              color: .black,
+                                              offset: offset,
+                                              radius: 3)
+        }
+    }
+    
     
     @IBOutlet weak var carMakeTF: UITextField!{
         didSet {
@@ -48,14 +72,11 @@ class FilterView: UIView {
     }
     @IBOutlet weak var anyMakeView: UIView! {
         didSet {
-            self.anyMakeView.setShadow(opacity: 0.5, color: .black, offset: offset, radius: 3)
             self.anyMakeView.make(radius: 8.0, backgroundColor: UIColor.white)
-
         }
     }
     @IBOutlet weak var anyModelView: UIView! {
         didSet {
-            self.anyModelView.setShadow(opacity: 0.5, color: .black, offset: offset, radius: 3)
             self.anyModelView.make(radius: 8.0, backgroundColor: UIColor.white)
         }
     }
@@ -88,7 +109,9 @@ class FilterView: UIView {
         tableView.register(FilterCell.self, forCellReuseIdentifier: Constants.Cell.filterCell)
     }
     
-    private func createfilterView(frames: CGRect) {
+    /// Create Filter View with frame
+    /// - Parameter frames: Frame of the Filter View.
+    func createFilterView(frames: CGRect) {
         
         tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y + frames.height, width: frames.width, height: 0)
         self.transparentView.backgroundColor = UIColor.clear
@@ -111,22 +134,46 @@ class FilterView: UIView {
     
     //MARK:- Remove filter view from superview -
     @objc func removeTransparentView() {
+        
         self.transparentView.removeFromSuperview()
         self.tableView.removeFromSuperview()
     }
     
-    private func setSelectedIndexValue(_ indexPath: IndexPath) {
+    /// Set selected view
+    /// - Parameter indexPath: Selected Index Path
+    func setSelectedIndexValue(_ indexPath: IndexPath) {
+        
+        let selectedText = self.filterCarList[indexPath.row]
+        
+        if selectedText.elementsEqual(Constants.Filter.resetFilter){
+            Utility.shared.context.reset()
+            self.carModelTF.text = Constants.BlankSpace.empty
+            self.carMakeTF.text = Constants.BlankSpace.empty
+            Utility.shared.carDetails = CoreDataManager.shared.fetchCarMakerData()
+            self.addFilterViewDelegate?.reloadFilterData()
+            return
+        }
         
         switch self.selectedDropdown {
         case .carMaker:
-            self.carMakeTF.text = self.filterCarList[indexPath.row]
+            self.carMakeTF.text = selectedText
             self.carModelTF.text = ""
         case .carModel:
-            self.carModelTF.text = self.filterCarList[indexPath.row]
+            self.carModelTF.text = selectedText
         case .none:
             break
         }
-        self.addFilterViewDelegate?.reloadFilterData(maker: self.carMakeTF.text, model: self.carModelTF.text)
+        
+        let makeText = self.carMakeTF.text
+        let modelText = self.carModelTF.text
+        if let maker = makeText, !maker.isEmpty {
+            Utility.shared.getFilteredArray(maker: maker, model: Constants.BlankSpace.empty)
+        } else if  let model = modelText, !model.isEmpty {
+            Utility.shared.getFilteredArray(maker: Constants.BlankSpace.empty, model: model)
+        } else {
+            Utility.shared.carDetails = CoreDataManager.shared.fetchCarMakerData()
+        }
+        self.addFilterViewDelegate?.reloadFilterData()
     }
     
      //MARK:- IBActions -
@@ -134,8 +181,11 @@ class FilterView: UIView {
         
         self.selectedDropdown = .carMaker
         filterCarList = Utility.shared.getAllMakers()
+        if !self.carMakeTF.text.unwrappedString.isEmpty {
+            filterCarList.insert(Constants.Filter.resetFilter, at: 0)
+        }
         let frame = self.getMainViewFrameDelegate?.changeMakeViewFrameWithReferenceToView()
-        self.createfilterView(frames: frame!)
+        self.createFilterView(frames: frame!)
         self.tableView.reloadData()
     }
     
@@ -143,8 +193,11 @@ class FilterView: UIView {
         
         self.selectedDropdown = .carModel
         filterCarList = Utility.shared.getAllModels(maker: self.carMakeTF.text)
+        if !self.carModelTF.text.unwrappedString.isEmpty {
+            filterCarList.insert(Constants.Filter.resetFilter, at: 0)
+        }
         let frame = self.getMainViewFrameDelegate?.changeModelViewFrameWithReferenceToView()
-        self.createfilterView(frames: frame!)
+        self.createFilterView(frames: frame!)
         self.tableView.reloadData()
     }
 }

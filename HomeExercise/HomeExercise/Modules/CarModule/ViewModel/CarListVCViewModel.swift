@@ -33,22 +33,22 @@ class CarListVCViewModel {
     }
     
     /// Fetch JSON Data from json file and convert it to model.
-    private func fetchJSONData(){
+    func fetchJSONData(){
         
         let json = Constants.JSON.jsonFile
         let carLists: [CarDetails] = shared.fetchAndParseJSONFile(resource: json)
         
         if !UserDefaults.standard.bool(forKey: Constants.Entity.isSynced) {
             carLists.forEach({ Utility.shared.saveDataInCoreData(detail: $0) })
+            Utility.shared.carDetails = Utility.shared.changeModelToCarMaker(carLists: carLists)
         } else {
             let carMaker = CoreDataManager.shared.fetchCarMakerData()
-            print(carMaker)
+            Utility.shared.carDetails = carMaker
         }
-        
-        Utility.shared.carDetails = carLists
     }
     
-    
+    /// Set expand collapse status for indexPath
+    /// - Parameter indexPath: indexPath for
     func setExpandCollapseStatus(indexPath: IndexPath){
         
         if self.selectedRow == indexPath { return }
