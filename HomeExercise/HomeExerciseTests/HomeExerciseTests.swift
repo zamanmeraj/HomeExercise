@@ -81,25 +81,4 @@ class HomeExerciseTests: XCTestCase {
         filterView.setSelectedIndexValue(indexPath)
         XCTAssertEqual(filterView.carModelTF.text!, "")
     }
-    
-//    func testUtility() {
-//        
-//        let count = Utility.shared.carDetails.count
-//        Utility.shared.getFilteredArray(maker: nil)
-//        XCTAssertEqual(count, Utility.shared.carDetails.count)
-//        Utility.shared.getFilteredArray(model: nil)
-//        XCTAssertEqual(count, Utility.shared.carDetails.count)
-//        
-//        let getAllModel = Utility.shared.getAllModels(maker: nil)
-//        XCTAssertTrue(getAllModel.count > 0)
-//        
-//        let getAllMaker = Utility.shared.getAllMakers()
-//        XCTAssertTrue(getAllMaker.count > 0)
-//        
-//        Utility.shared.getFilteredArray(maker: "Rover")
-//        XCTAssertTrue(Utility.shared.carDetails.count > 0)
-//        
-//        Utility.shared.getFilteredArray(maker: "Rover")
-//        XCTAssertTrue(Utility.shared.carDetails.count > 0)
-//    }
 }
