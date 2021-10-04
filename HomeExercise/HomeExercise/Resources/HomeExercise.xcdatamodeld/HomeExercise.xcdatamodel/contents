@@ -7,16 +7,16 @@
         <attribute name="marketPrice" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="model" optional="YES" attributeType="String"/>
         <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="cons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cons"/>
-        <relationship name="pros" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pros"/>
+        <relationship name="cons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cons" inverseName="maker" inverseEntity="Cons"/>
+        <relationship name="pros" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pros" inverseName="maker" inverseEntity="Pros"/>
     </entity>
     <entity name="Cons" representedClassName="Cons" syncable="YES" codeGenerationType="class">
         <attribute name="consTitle" optional="YES" attributeType="String"/>
-        <relationship name="maker" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CarMaker"/>
+        <relationship name="maker" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CarMaker" inverseName="cons" inverseEntity="CarMaker"/>
     </entity>
     <entity name="Pros" representedClassName="Pros" syncable="YES" codeGenerationType="class">
         <attribute name="prosTitle" optional="YES" attributeType="String"/>
-        <relationship name="maker" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CarMaker"/>
+        <relationship name="maker" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CarMaker" inverseName="pros" inverseEntity="CarMaker"/>
     </entity>
     <elements>
         <element name="CarMaker" positionX="-127.5578002929688" positionY="-87.11363220214844" width="128" height="163"/>

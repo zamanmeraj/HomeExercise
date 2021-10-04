@@ -81,4 +81,12 @@ class HomeExerciseTests: XCTestCase {
         filterView.setSelectedIndexValue(indexPath)
         XCTAssertEqual(filterView.carModelTF.text!, "")
     }
+    
+    func testUtility() {
+        let data: [CarDetails] = Utility.shared.fetchAndParseJSONFile(resource: Constants.JSON.jsonFile)
+        let carMaker = Utility.shared.changeModelToCarMaker(carLists: data)
+        XCTAssertTrue(carMaker.count > 0)
+        
+    }
+    
 }
