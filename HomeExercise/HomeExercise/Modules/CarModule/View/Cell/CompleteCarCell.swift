@@ -102,7 +102,7 @@ class CompleteCarCell: UITableViewCell {
         if totalCount > 0 {
             calculateHeightForPros(prosList: prosList,heightValue: &heightValue)
             claculateHeightForCons(consList: consList, heightValue: &heightValue)
-            let height = 34+self.carName.carNameHeight+self.carPriceLbl.priceLblHeight+heightValue
+            let height = self.carName.carNameHeight+self.carPriceLbl.priceLblHeight+heightValue
             let size = CGSize(width: self.containerView.frame.width, height: height)
             self.containerView.frame = CGRect(origin: self.containerView.frame.origin, size: size)
             self.prosConsStackViewHeight.constant = heightValue
@@ -119,7 +119,7 @@ class CompleteCarCell: UITableViewCell {
                                                      text: text,
                                                      isBulletHidden: isBulletHidden)
         self.prosConsStackView.addSubview(prosConsList)
-        return height+20
+        return prosConsList.frame.height
         
     }
 }

@@ -32,7 +32,9 @@ extension UIView {
     }
     
     class func createProsConsView(frame: CGRect, text: String, isBulletHidden: Bool) -> ProsConsList {
-        let prosConsList = ProsConsList(frame: frame)
+        var givenFrame = frame
+        givenFrame.size.height = isBulletHidden ? givenFrame.size.height+18 : givenFrame.size.height+12
+        let prosConsList = ProsConsList(frame: givenFrame)
         prosConsList.titleLbl.text = text
         prosConsList.bulletLbl.isHidden = isBulletHidden
         prosConsList.titleLbl.font = isBulletHidden ? UIFont.prosConsHeadingFont : UIFont.prosConsFont
